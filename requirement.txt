@@ -1,0 +1,73 @@
+Boshlang'ich sozlamalar
+1. gitignore sozlash
+2. venv yaratish va aktivatsiya qilish
+3. django o'rnatish
+4. config nomli proyekt yaratish
+5. python manage.py createsuperuser (agar admin panelga kirishga to'g'ri kelib qolsa xar ehtimol)
+
+Loyihaning config sozlamalari
+1. app yaratish
+2. config/settings.py da applarni installed_apps ga qo'shish
+3. config/settings.py da templates manzilini BASE_DIR orqali berish
+4. config/settings.py timezone ni 'Asia/Tashkent' ga to'g'irlash
+5. config/settings.py da static faylini sozlash
+5. config/settings.py da media faylini sozlash
+6. config/urls.py da home funksiyasini asosiy url ('') ga sozlash
+7. config/urls.py da apps urllarini larini ko'rsatish
+
+/// ASOSIY KOD YOZISH QISMI
+1. templates va static directory yaratish
+3. static ni ichida agar bo'lsa css uchun alohida papka yaratish
+
+Eslatma: Loyihani githubga joylab uni havolasini yuborishngiz kerak
+
+reponi nomi 2-modul-final-exam bo'lishi kerak
+
+Loyiha 6 ta app (ilova)dan iborat
+1. users
+2. departments
+3. students
+4. teachers
+5. groups
+6. subjects
+
+Vazifa shartlari
+Har bir app quyidagi talablarga javob berishi lozim.
+gitignore bo'lishi va keraksiz fayllar (.idea, pycache, db.sqlite3) repoga ketib qolmasligi kerak
+barcha html fayllarga backend ulang!
+template vorisdorlikka ahamiyatli bo'ling
+Database relations ga mos bo'lishi kerak
+base modeldan foydalaning agar kerak bo'lsa
+# SEO friendly-url
+seo-friendly url bo'lishi kerak
+# Forms
+forms.py orqali formalarni tuzilishini tuzishingiz kerak
+# AdminPanel
+admin.py ni to'gri sozlang har bir model uchun
+admin panel user-friendly bo'lsin
+# Clean Validation error message
+har bir field uchun clean validatsiya va message error template ga qo'shishingiz kerak
+# Custom User va Profile
+custom user va user profile yaratish kerak
+
+
+# Asosiysi modellarni togri boglab olish kerak hato qilmasdan
+BaseModel: status, created_at
+1.student model: image, first_name, last_name, date_of_birth, email, phone_number,
+address, enrollment_date, slug, relationlar:(group)
+parent/guardian model: (name, email, phone, relationship, student)
+4. Department model: name, slug, head_of_department, description, location, contact_email, contact_phone, relationlar:(teacher, student, subject)
+5. Teacher model: image, slug, first_name, last_name, position, qualification, email,
+phone_number, address, join_date, employment_type, relationlar:(subject, group, student)
+6. EmploymentType model: name
+7. Group model: name, slug, academic_year, description, max_students,
+relationlar:(grade(grade_level), teacher(class_teacher), schedule, subjects)
+8. Schedule model: name
+9. Subject model: name, slug, description, credit_hours,
+relationlar:(grade, Prerequisites(prerequisites), student)
+11. Custom_user model:
+12. Profile:
+
+2. login logout yozish kerak
+3. clean validatsiya va message error templatega qoshish kerak
+
