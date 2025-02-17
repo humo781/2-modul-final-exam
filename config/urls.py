@@ -24,8 +24,9 @@ urlpatterns = [
     path('', dashboard, name='home'),
     path('admin/', admin.site.urls),
     path('department/', include('departments.urls')),
-    # path('group/', include('groups.urls')),
-    # path('student/', include('students.urls')),
-    # path('subject/', include('subjects.urls')),
-    # path('teacher/', include('teachers.urls')),
+    path('group/', include('groups.urls')),
+    path('student/', include('students.urls')),
+    path('subject/', include('subjects.urls')),
+    path('teacher/', include('teachers.urls')),
+    path('user/', include('users.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

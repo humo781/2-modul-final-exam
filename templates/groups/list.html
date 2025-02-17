@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% block title %}{% endblock %}
+{% block content %}
+    <div class="mb-8 flex justify-between items-center">
+        <h1 class="text-2xl font-bold">Groups</h1>
+        <div class="flex items-center space-x-4">
+            <div class="relative">
+                <input type="search" placeholder="Search groups..." class="pl-10 pr-4 py-2 border rounded-lg">
+                <i class="bi bi-search absolute left-3 top-3 text-gray-400"></i>
+            </div>
+            <a href="{% url 'groups:create' %}" class="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg">
+                <i class="bi bi-plus"></i>
+                <span>Add Group</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="bg-white p-4 rounded-lg shadow-sm mb-6">
+        <div class="flex flex-wrap gap-4">
+            <select class="border rounded-lg px-4 py-2">
+                <option>All Grades</option>
+                <option>Grade 9</option>
+                <option>Grade 10</option>
+                <option>Grade 11</option>
+            </select>
+            <select class="border rounded-lg px-4 py-2">
+                <option>All Teachers</option>
+                <option>Dr. Jane Smith</option>
+                <option>Mr. John Doe</option>
+            </select>
+            <select class="border rounded-lg px-4 py-2">
+                <option>Status</option>
+                <option>Active</option>
+                <option>Inactive</option>
+            </select>
+            <button class="px-4 py-2 text-blue-600 hover:bg-blue-50 rounded-lg">
+                Clear Filters
+            </button>
+        </div>
+    </div>
+
+    <!-- Groups Table -->
+    <div class="bg-white rounded-lg shadow-sm">
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead class="bg-gray-50 border-b">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">
+                            <div class="flex items-center space-x-1">
+                                <span>Group Name</span>
+                                <i class="bi bi-arrow-down-up"></i>
+                            </div>
+                        </th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Grade</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Students</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Teacher</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Status</th>
+                        <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y">
+                {% for group in groups %}
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4">
+                            <div class="flex items-center space-x-3">
+                                <div class="h-8 w-8 rounded-full bg-purple-100 flex items-center justify-center">
+                                    <i class="bi bi-collection text-purple-600"></i>
+                                </div>
+                                <div>
+                                    <p class="font-medium">Group {{ group.name }}</p>
+                                    <p class="text-sm text-gray-500">{{ group.departments }} Focus</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 text-sm">Grade {{ group.grade_level }}</td>
+                        <td class="px-6 py-4 text-sm">{{ group.max_students }} students</td>
+                        <td class="px-6 py-4 text-sm">{% for teacher in group.teachers.all %}{{ teacher.first_name }} {{ teacher.last_name }}{% endfor %}</td>
+                        <td class="px-6 py-4">
+                            <span class="px-2 py-1 bg-green-100 text-green-800 rounded-full text-sm">
+                                {% if group.status %}Active {% else %} Disactive {% endif %}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex items-center space-x-3">
+                                <a href="{% if group.slug %}{{ group.get_detail_url }}{% endif %}" class="text-blue-600 hover:text-blue-800">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a href="{% url 'groups:update' pk=group.pk %}" class="text-gray-600 hover:text-gray-800">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a href="{% url 'groups:delete' pk=group.pk %}">
+                                    <button class="text-red-600 hover:text-red-800">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {# PAGINATION #}
+        {% include 'includes/pagination.html' %}
+
+    </div>
+{% endblock %}

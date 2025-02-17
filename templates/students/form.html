@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+{% block title %}{% if student %} Student Update{%else%} Student Create{% endif %}{% endblock %}
+{% block content %}
+    <div class="max-w-2xl mx-auto">
+        <div class="mb-8 flex items-center justify-between">
+            <h1 class="text-2xl font-bold">{% if student %} Student Update{%else%}Add Student{% endif %}</h1>
+            <a href="{% url 'students:list' %}" class="text-gray-500 hover:text-gray-700">
+                <i class="bi bi-x-lg"></i>
+            </a>
+        </div>
+
+        <form method="post" class="bg-white rounded-lg shadow-sm p-6" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="space-y-6">
+
+                <!-- Profile Photo -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        Profile Photo
+                    </label>
+                    <div class="flex items-center space-x-4">
+                        <div class="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center">
+                            {% if student %}
+                                <img src="{{ student.image.url }}" alt="Profile Photo" class="w-full h-full rounded-full object-cover">
+                            {% else %}
+                                <i class="bi bi-person text-3xl text-gray-400"></i>
+                            {% endif %}
+                        </div>
+                        <input name="image" type="file" id="fileInput" class="hidden">
+                        <button type="button" class="px-4 py-2 border rounded-lg hover:bg-gray-50"
+                        onclick="document.getElementById('fileInput').click()">
+                            Upload Photo
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Personal Information -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">First Name</label>
+                        <input type="text" required name="first_name"
+                               {% if student %} value="{{ student.first_name }}" {% endif %}
+                            class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            placeholder="Enter first name">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
+                        <input type="text" required name="last_name"
+                               {% if student %} value="{{ student.last_name }}" {% endif %}
+                            class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            placeholder="Enter last name">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Date of Birth</label>
+                        <input type="date" required name="dob"
+                               {% if student %} value="{{ student.dob|date:'Y-m-d' }}" {% endif %}
+                            class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Gender</label>
+                        <select required name="gender"
+                            class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="">Select gender</option>
+                            {% for gender in genders %}
+                                <option value="{{ gender.id }}"
+                                {% if student.gender and student.gender.id == gender.id %} selected {% endif %}>
+                                    {{ gender.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Contact Information -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                    <input type="email" required name="email"
+                           {% if student %} value="{{ student.email }}" {% endif %}
+                        class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="Enter email address">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                    <input type="tel" required name="phone_number"
+                           {% if student %} value="{{ student.phone_number }}" {% endif %}
+                        class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="Enter phone number">
+                </div>
+
+                <!-- Academic Information -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Group</label>
+                    <select required name="group"
+                        class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="">Select group</option>
+                        {% for group in groups %}
+                            <option value="{{ group.id }}"
+                            {% if student.group == group %} selected {% endif %}>
+                                {{ group.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Grade</label>
+                    <select required name="grade"
+                        class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="">Select grade</option>
+                        {% for grade in grades %}
+                            <option value="{{ grade.id }}"
+                            {% if student.grade.id == grade.id %} selected {% endif %}>
+                                Grade {{ grade.grade }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Address -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Address</label>
+                    <textarea rows="2" required name="address"
+                        class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="Enter full address">{% if student %}{{ student.address }}{% endif %}</textarea>
+                </div>
+
+                <!-- Parent/Guardian Information -->
+<!--                <div>-->
+<!--                    <h3 class="text-lg font-medium mb-4">Parent/Guardian Information</h3>-->
+<!--                    <div class="space-y-4">-->
+<!--                        <div>-->
+<!--                            <label class="block text-sm font-medium text-gray-700 mb-2">Parent/Guardian Name</label>-->
+<!--                            <input type="text" required name="p/g name"-->
+<!--                                class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"-->
+<!--                                placeholder="Enter parent/guardian name">-->
+<!--                        </div>-->
+<!--                        <div>-->
+<!--                            <label class="block text-sm font-medium text-gray-700 mb-2">-->
+<!--                                Parent/Guardian Phone-->
+<!--                            </label>-->
+<!--                            <input type="tel" required name="p/g phone"-->
+<!--                                class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"-->
+<!--                                placeholder="Enter parent/guardian phone">-->
+<!--                        </div>-->
+<!--                        <div>-->
+<!--                            <label class="block text-sm font-medium text-gray-700 mb-2">-->
+<!--                                Parent/Guardian Email-->
+<!--                            </label>-->
+<!--                            <input type="email" required name="p/g email"-->
+<!--                                class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"-->
+<!--                                placeholder="Enter parent/guardian email">-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+                <div class="flex items-center justify-end space-x-4">
+                    <a href="{% url 'students:list' %}"
+                        class="px-4 py-2 border rounded-lg hover:bg-gray-50">
+                        Cancel
+                    </a>
+                    <button type="submit"
+                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                        Save Student
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

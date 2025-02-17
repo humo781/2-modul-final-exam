@@ -38,13 +38,13 @@ barcha html fayllarga backend ulang!
 template vorisdorlikka ahamiyatli bo'ling
 Database relations ga mos bo'lishi kerak
 base modeldan foydalaning agar kerak bo'lsa
+# AdminPanel
+admin.py ni to'gri sozlang har bir model uchun
+admin panel user-friendly bo'lsin
 # SEO friendly-url
 seo-friendly url bo'lishi kerak
 # Forms
 forms.py orqali formalarni tuzilishini tuzishingiz kerak
-# AdminPanel
-admin.py ni to'gri sozlang har bir model uchun
-admin panel user-friendly bo'lsin
 # Clean Validation error message
 har bir field uchun clean validatsiya va message error template ga qo'shishingiz kerak
 # Custom User va Profile
@@ -52,22 +52,11 @@ custom user va user profile yaratish kerak
 
 
 # Asosiysi modellarni togri boglab olish kerak hato qilmasdan
-BaseModel: status, created_at
-1.student model: image, first_name, last_name, date_of_birth, email, phone_number,
-address, enrollment_date, slug, relationlar:(group)
-parent/guardian model: (name, email, phone, relationship, student)
-4. Department model: name, slug, head_of_department, description, location, contact_email, contact_phone, relationlar:(teacher, student, subject)
-5. Teacher model: image, slug, first_name, last_name, position, qualification, email,
-phone_number, address, join_date, employment_type, relationlar:(subject, group, student)
-6. EmploymentType model: name
-7. Group model: name, slug, academic_year, description, max_students,
-relationlar:(grade(grade_level), teacher(class_teacher), schedule, subjects)
-8. Schedule model: name
-9. Subject model: name, slug, description, credit_hours,
-relationlar:(grade, Prerequisites(prerequisites), student)
 11. Custom_user model:
 12. Profile:
 
 2. login logout yozish kerak
 3. clean validatsiya va message error templatega qoshish kerak
 
+
+agar request.path == department/list ga yozuv kok tusga kirishi kerak shu yerda qoldim
